@@ -44,7 +44,14 @@ public class Citizen : MonoBehaviour
     public void OnToiletPaperReceived()
     {
         GetComponent<Animator>().Play("Happy_Jump");
+        ScoreHUDScript.ScoreHUDSingleton.PointsReceived();
+        StartCoroutine(DestroyInSeconds(3.0f));
+    }
 
+    IEnumerator DestroyInSeconds(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        Destroy(this.gameObject);
     }
 
 }

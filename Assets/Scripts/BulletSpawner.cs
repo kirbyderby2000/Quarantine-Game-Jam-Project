@@ -4,22 +4,28 @@ using UnityEngine;
 
 public class BulletSpawner : MonoBehaviour
 {
+    
     [SerializeField] private string fireInputButtonName = "Fire1";
     /// <summary>
     /// The fps camera reference (used for raycasting lines for bullet spawning)
     /// </summary>
     private Camera fpsCameraReference;
-    
+
+    [SerializeField] BulletCountManager bulletCountManager;
+
     /// <summary>
     /// The distance of the bullet
     /// </summary>
     [Header("Bullet Settings")]
     [SerializeField] private float bulletDistance = 60.0f;
 
+
     /// <summary>
     /// The bullet prefab
     /// </summary>
     [SerializeField] private Bullet bulletPrefab;
+
+    
 
     /// <summary>
     /// The transform reference point where bullets will spawn from (Ideally the hand / gun location)
@@ -30,13 +36,14 @@ public class BulletSpawner : MonoBehaviour
     private void Awake()
     {
         fpsCameraReference = Camera.main;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         // If the fire button is being pressed, shoot a bullet
-        if (Input.GetButtonDown(fireInputButtonName))
+        if (Input.GetButtonDown(fireInputButtonName) && bulletCountManager.BulletsAvailable())
         {
             ShootBullet();
         }
@@ -66,7 +73,9 @@ public class BulletSpawner : MonoBehaviour
             Debug.Log("Didn't hit any object. Simply firing bullet at the end of raypoint");
             SpawnBullet(bulletSpawnTransformOriginPoint.position, bulletRay.GetPoint(bulletDistance));
         }
-        
+
+        bulletCountManager.SpendBullet();
+
     }
 
     /// <summary>
