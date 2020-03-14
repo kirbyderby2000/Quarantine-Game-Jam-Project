@@ -63,6 +63,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void Update()
         {
             RotateView();
+
+            if (pulling) return;
+
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
             {
@@ -84,11 +87,31 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
         }
 
+        /// <summary>
+        /// Indicator if a pull jump has started
+        /// </summary>
         private bool pullJump = false;
 
+        /// <summary>
+        /// Indicator if the player is being pulled
+        /// </summary>
+        private bool pulling = false;
+
+        /// <summary>
+        /// Makes the player jump after being pulled
+        /// </summary>
         public void PullJump()
         {
+            pulling = false;
             pullJump = true;
+        }
+
+        /// <summary>
+        /// Disables player movement control while the player is being pulled
+        /// </summary>
+        public void PullStarted()
+        {
+            pulling = true;
         }
 
 
@@ -102,6 +125,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void FixedUpdate()
         {
+            if (pulling) return;
             float speed;
             GetInput(out speed);
             // always move along the camera forward as it is the direction that it being aimed at

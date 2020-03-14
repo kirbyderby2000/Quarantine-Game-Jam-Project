@@ -38,9 +38,9 @@ public class PlayerPull : MonoBehaviour
         Debug.Log($"Pulling player towards {point.ToString()}");
 
         point = OffsetPullDestinationPosition(point);
-        
+
         // Disable the first person controller component
-        firstPersonController.enabled = false;
+        firstPersonController.PullStarted();
         // Turn off gravity
         rigidBody.useGravity = false;
         // Start moving the player towards the given point
