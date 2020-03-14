@@ -1,0 +1,50 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Citizen : MonoBehaviour
+{
+    [SerializeField] GameObject triggerColliderPrefab;
+
+    private void Awake()
+    {
+        GetComponent<Animator>().Play("Idle_Wave");
+        Instantiate(triggerColliderPrefab, transform).transform.localPosition = new Vector3(0.0f, 2.0f, 0.0f);
+    }
+
+
+
+    private void Start()
+    {
+        StartCoroutine(RotateTowardsPlayer());
+        StartCoroutine(SetToKinematicInSeconds(2.0f));
+    }
+
+    IEnumerator SetToKinematicInSeconds(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        GetComponent<Rigidbody>().isKinematic = true;
+
+    }
+
+    IEnumerator RotateTowardsPlayer()
+    {
+        Vector3 playerPosition;
+
+        while (true)
+        {
+            playerPosition = PlayerPull.PlayerSingleton.transform.position;
+            playerPosition.y = transform.position.y;
+            transform.LookAt(playerPosition);
+            yield return null;
+        }
+    }
+
+
+    public void OnToiletPaperReceived()
+    {
+        GetComponent<Animator>().Play("Happy_Jump");
+
+    }
+
+}
