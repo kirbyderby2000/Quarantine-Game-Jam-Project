@@ -53,6 +53,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_NextStep = m_StepCycle/2f;
             m_Jumping = false;
 			m_MouseLook.Init(transform , m_Camera.transform);
+
+            var fpsGameObject = GameObject.Find("FirstPersonCharacter");
+            var listener = fpsGameObject.AddComponent<FMODUnity.StudioListener>();
         }
 
 
