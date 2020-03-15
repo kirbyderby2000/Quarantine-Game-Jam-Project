@@ -6,6 +6,7 @@ public class BulletCountManager : MonoBehaviour
 {
     [SerializeField] AmmoHUDScript ammoHUD;
     [SerializeField] private int startingBulletCount = 15;
+    [SerializeField] bool unlimitedAmmo = false;
     private int currentBulletCount;
 
     private void Awake()
@@ -16,12 +17,13 @@ public class BulletCountManager : MonoBehaviour
 
     public bool BulletsAvailable()
     {
-        return currentBulletCount > 0;
+        return unlimitedAmmo ? unlimitedAmmo : currentBulletCount > 0;
     }
 
     public void SpendBullet()
     {
         currentBulletCount--;
+        if (currentBulletCount < 0) currentBulletCount = 0;
         UpdateBulletCountHUD();
     }
 

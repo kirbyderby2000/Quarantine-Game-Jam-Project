@@ -16,6 +16,7 @@ public class Citizen : MonoBehaviour
 
     private void Start()
     {
+        ArrowHUD.ArrowHUDInstance.AddObjectToLookingList(transform);
         StartCoroutine(RotateTowardsPlayer());
         StartCoroutine(SetToKinematicInSeconds(2.0f));
     }
@@ -44,6 +45,7 @@ public class Citizen : MonoBehaviour
     public void OnToiletPaperReceived()
     {
         GetComponent<Animator>().Play("Happy_Jump");
+        ArrowHUD.ArrowHUDInstance.RemoveObjectFromLookingList(transform);
         ScoreHUDScript.ScoreHUDSingleton.PointsReceived();
         StartCoroutine(DestroyInSeconds(3.0f));
     }

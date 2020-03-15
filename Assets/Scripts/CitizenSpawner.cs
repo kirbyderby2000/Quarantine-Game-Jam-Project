@@ -37,7 +37,6 @@ public class CitizenSpawner : MonoBehaviour
         int randomCitizenIndex = Random.Range(0, citizenPrefabs.Count);
 
         citizenSpawned = Instantiate(citizenPrefabs[randomCitizenIndex], transform.position, Quaternion.identity);
-
     }
 
     private void OnDrawGizmos()
