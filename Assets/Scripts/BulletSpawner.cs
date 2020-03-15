@@ -32,6 +32,11 @@ public class BulletSpawner : MonoBehaviour
     /// </summary>
     [SerializeField] private Transform bulletSpawnTransformOriginPoint;
 
+    [Space]
+    [Header("Audio")]
+    [FMODUnity.EventRef] [SerializeField]
+    private string ShootSound = "event:/Player/Shoot";
+
 
     private void Awake()
     {
@@ -91,5 +96,12 @@ public class BulletSpawner : MonoBehaviour
         instantiatedBullet.AddForceTowardsPoint(endPosition);
         // Set the bullet's distance to be travelled before being dispensed
         instantiatedBullet.SetDistanceTrackingForDisposal(bulletDistance);
+
+        PlayShootingSound(spawnPosition);
+    }
+
+    private void PlayShootingSound(Vector3 position)
+    {
+        FMODUnity.RuntimeManager.PlayOneShot(ShootSound, position);
     }
 }

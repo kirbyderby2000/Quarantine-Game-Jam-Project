@@ -984,6 +984,27 @@ retry:
             instance.release();
         }
 
+        public static void PlayOneShotAttached(string path, string parameterName, float parameterValue, GameObject gameObject)
+        {
+            try
+            {
+                PlayOneShotAttached(PathToGUID(path), parameterName, parameterValue, gameObject);
+            }
+            catch (EventNotFoundException)
+            {
+                Debug.LogWarning("[FMOD] Event not found: " + path);
+            }
+        }
+
+        public static void PlayOneShotAttached(Guid guid, string parameterName, float parameterValue, GameObject gameObject)
+        {
+            var instance = CreateInstance(guid);
+            AttachInstanceToGameObject(instance, gameObject.transform, gameObject.GetComponent<Rigidbody>());
+            instance.setParameterByName(parameterName, parameterValue);
+            instance.start();
+            instance.release();
+        }
+
         public static FMOD.Studio.EventDescription GetEventDescription(string path)
         {
             try

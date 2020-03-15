@@ -24,9 +24,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private CurveControlledBob m_HeadBob = new CurveControlledBob();
         [SerializeField] private LerpControlledBob m_JumpBob = new LerpControlledBob();
         [SerializeField] private float m_StepInterval;
-        [SerializeField] private AudioClip[] m_FootstepSounds;    // an array of footstep sounds that will be randomly selected from.
-        [SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
-        [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
 
         private Camera m_Camera;
         private bool m_Jump;
@@ -40,6 +37,22 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_StepCycle;
         private float m_NextStep;
         private bool m_Jumping;
+
+        [Space]
+        [Header("Audio")]
+        [Space]
+        [FMODUnity.EventRef] [SerializeField]
+        private string JumpSound = "event:/Player/Jump";
+        [FMODUnity.EventRef]
+        [SerializeField]
+        private string LandSound = "event:/Player/Land";
+        [FMODUnity.EventRef]
+        [SerializeField]
+        private string FootstepSound = "event:/Player/Footsteps";
+        [FMODUnity.EventRef]
+        [SerializeField]
+        private string AmbienceSound = "event:/Environment/Ambience";
+        private FMOD.Studio.EventInstance ambienceInstance;
 
         // Use this for initialization
         private void Start()
@@ -56,6 +69,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             var fpsGameObject = GameObject.Find("FirstPersonCharacter");
             var listener = fpsGameObject.AddComponent<FMODUnity.StudioListener>();
+
+            ambienceInstance = FMODUnity.RuntimeManager.CreateInstance(AmbienceSound);
+            ambienceInstance.start();
         }
 
 
@@ -118,8 +134,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void PlayLandingSound()
         {
             m_NextStep = m_StepCycle + .5f;
+            FMODUnity.RuntimeManager.PlayOneShotAttached(LandSound, this.gameObject);
         }
-
 
         private void FixedUpdate()
         {
@@ -171,11 +187,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_MouseLook.UpdateCursorLock();
         }
 
-
         private void PlayJumpSound()
         {
+            FMODUnity.RuntimeManager.PlayOneShotAttached(JumpSound, this.gameObject);
         }
-
 
         private void ProgressStepCycle(float speed)
         {
@@ -202,6 +217,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 return;
             }
+
+            FMODUnity.RuntimeManager.PlayOneShotAttached(FootstepSound, this.gameObject);
         }
 
 
