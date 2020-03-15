@@ -92,5 +92,5 @@ MonoBehaviour:
   - {fileID: 348994252588008495, guid: bb0bbb3bd42912a4cb4ce1c044ba210d, type: 3}
   - {fileID: -1386558869351580009, guid: 657efc207b24f9a44aaafc6eed64fb20, type: 3}
   - {fileID: 8254250434889655187, guid: 24e1d4352595c86418932a9a904f80b6, type: 3}
-  spawnSecondsInterval: 35
-  spawnSecondsSaltRandomizer: 25
+  spawnSecondsInterval: 120
+  spawnSecondsSaltRandomizer: 60
