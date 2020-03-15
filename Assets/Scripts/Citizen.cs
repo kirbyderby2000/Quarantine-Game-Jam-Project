@@ -5,6 +5,7 @@ using UnityEngine;
 public class Citizen : MonoBehaviour
 {
     [SerializeField] GameObject triggerColliderPrefab;
+    [SerializeField] GameObject loveParticleFX;
 
     private void Awake()
     {
@@ -45,6 +46,7 @@ public class Citizen : MonoBehaviour
     public void OnToiletPaperReceived()
     {
         GetComponent<Animator>().Play("Happy_Jump");
+        Instantiate(loveParticleFX, transform.position + new Vector3(0.0f, 3.0f), loveParticleFX.transform.rotation);
         ArrowHUD.ArrowHUDInstance.RemoveObjectFromLookingList(transform);
         ScoreHUDScript.ScoreHUDSingleton.PointsReceived();
         StartCoroutine(DestroyInSeconds(3.0f));
