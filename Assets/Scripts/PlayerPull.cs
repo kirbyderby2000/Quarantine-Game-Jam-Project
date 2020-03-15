@@ -12,6 +12,11 @@ public class PlayerPull : MonoBehaviour
     [SerializeField] float pullPositionClippingOffset = 3.0f;
     private UnityStandardAssets.Characters.FirstPerson.FirstPersonController firstPersonController;
     private Rigidbody rigidBody;
+
+    private FMOD.Studio.EventInstance pullWindInstance;
+    [FMODUnity.EventRef] [SerializeField]
+    private string pullWindSound = "event:/Player/Wind";
+
     /// <summary>
     /// The player pull script singleton instance
     /// </summary>
@@ -49,7 +54,11 @@ public class PlayerPull : MonoBehaviour
     
     IEnumerator MovePlayerTowardsPoint(Vector3 point)
     {
-        while(Vector3.Distance(transform.position, point) >= Mathf.Epsilon)
+        pullWindInstance = FMODUnity.RuntimeManager.CreateInstance(pullWindSound);
+        pullWindInstance.start();
+        pullWindInstance.setParameterByName("Wind", 1f);
+
+        while (Vector3.Distance(transform.position, point) >= Mathf.Epsilon)
         {
             transform.position = Vector3.MoveTowards(transform.position, point, pullDistance);
             Debug.Log($"Pulling player towards {point.ToString()}");
@@ -57,7 +66,9 @@ public class PlayerPull : MonoBehaviour
         }
 
         rigidBody.velocity = Vector3.zero;
-        
+
+        pullWindInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        pullWindInstance.release();
 
         yield return null;
 
