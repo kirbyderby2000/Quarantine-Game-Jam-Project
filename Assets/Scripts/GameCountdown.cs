@@ -54,6 +54,7 @@ public class GameCountdown : MonoBehaviour
     public void RewardBonusSeconds()
     {
         currentSeconds += bonusSecondsReward;
+        GetComponent<Animator>().SetTrigger("growthTrigger");
         UpdateCountdownText();
     }
 

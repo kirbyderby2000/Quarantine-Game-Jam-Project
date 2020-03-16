@@ -67,6 +67,7 @@ public class Citizen : MonoBehaviour
         Instantiate(loveParticleFX, transform.position + new Vector3(0.0f, 3.0f), loveParticleFX.transform.rotation);
         ArrowHUD.ArrowHUDInstance.RemoveObjectFromLookingList(transform);
         ScoreHUDScript.ScoreHUDSingleton.PointsReceived();
+        GameCountdown.CountdownSingleton.RewardBonusSeconds();
         StartCoroutine(DestroyInSeconds(3.0f));
     }
 
