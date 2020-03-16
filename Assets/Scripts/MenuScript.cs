@@ -23,6 +23,8 @@ public class MenuScript : MonoBehaviour
         MenuScriptSingleton = this;
         Cursor.visible = true;
         if (replaySelected) StartGame();
+
+        
     }
 
     public void StartGame()
@@ -84,6 +86,13 @@ public class MenuScript : MonoBehaviour
         ShowEndOfGameMenu();
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
+
+        var music = GameObject.Find("Music");
+        if (music != null)
+        {
+            Destroy(music);
+        }
+
         yield return null;
     }
 

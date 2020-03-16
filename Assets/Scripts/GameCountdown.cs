@@ -31,6 +31,7 @@ public class GameCountdown : MonoBehaviour
         if (countdownStarted) return;
 
         currentSeconds = gameSeconds;
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("GameSeconds", currentSeconds);
         countdownStarted = true;
         StartCoroutine(CountDownCoroutine());
     }
@@ -42,6 +43,7 @@ public class GameCountdown : MonoBehaviour
             yield return new WaitForSeconds(1.0f);
             currentSeconds--;
             UpdateCountdownText();
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("GameSeconds", currentSeconds);
             yield return null;
         }
 
