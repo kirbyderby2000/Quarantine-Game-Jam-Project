@@ -30,4 +30,9 @@ public class ScoreHUDScript : MonoBehaviour
 
         animator.SetTrigger("growthTrigger");
     }
+
+    public int GetScore()
+    {
+        return currentScore;
+    }
 }

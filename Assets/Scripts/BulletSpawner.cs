@@ -10,8 +10,7 @@ public class BulletSpawner : MonoBehaviour
     /// The fps camera reference (used for raycasting lines for bullet spawning)
     /// </summary>
     private Camera fpsCameraReference;
-
-    [SerializeField] BulletCountManager bulletCountManager;
+    
 
     /// <summary>
     /// The distance of the bullet
@@ -48,7 +47,7 @@ public class BulletSpawner : MonoBehaviour
     void Update()
     {
         // If the fire button is being pressed, shoot a bullet
-        if (Input.GetButtonDown(fireInputButtonName) && bulletCountManager.BulletsAvailable())
+        if (Input.GetButtonDown(fireInputButtonName))
         {
             ShootBullet();
         }
@@ -78,8 +77,7 @@ public class BulletSpawner : MonoBehaviour
             Debug.Log("Didn't hit any object. Simply firing bullet at the end of raypoint");
             SpawnBullet(bulletSpawnTransformOriginPoint.position, bulletRay.GetPoint(bulletDistance));
         }
-
-        bulletCountManager.SpendBullet();
+        
 
     }
 
