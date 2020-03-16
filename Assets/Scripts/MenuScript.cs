@@ -93,6 +93,9 @@ public class MenuScript : MonoBehaviour
             Destroy(music);
         }
 
+        var envBus = FMODUnity.RuntimeManager.GetBus("bus:/Env");
+        envBus.stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
         yield return null;
     }
 
