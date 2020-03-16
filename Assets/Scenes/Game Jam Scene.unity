@@ -11564,8 +11564,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameMenu: {fileID: 621476860}
-  gameSeconds: 5
-  bonusSecondsReward: 5
+  gameSeconds: 60
+  bonusSecondsReward: 3
   countdownText: {fileID: 47776784}
 --- !u!1001 &48017845
 PrefabInstance:

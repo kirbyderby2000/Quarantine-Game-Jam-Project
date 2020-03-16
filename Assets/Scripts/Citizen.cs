@@ -48,7 +48,7 @@ public class Citizen : MonoBehaviour
     {
         Vector3 playerPosition;
 
-        while (true)
+        while (PlayerPull.PlayerSingleton != null)
         {
             playerPosition = PlayerPull.PlayerSingleton.transform.position;
             playerPosition.y = transform.position.y;
