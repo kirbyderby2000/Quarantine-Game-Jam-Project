@@ -29,6 +29,13 @@ public class Bullet : MonoBehaviour
 
     [SerializeField]
     private string fireButton = "Fire1";
+
+    [SerializeField] ToiletPaperTrailFX toiletPaperTrailFXPrefab;
+
+    private ToiletPaperTrailFX toiletTrailInstance;
+
+    [SerializeField] Transform toiletPaperTrailEndRefPosition;
+
     private bool playerHoldingFireButton = true;
 
     private void Awake()
@@ -46,12 +53,15 @@ public class Bullet : MonoBehaviour
     /// <param name="point">The position to move this bullet towards</param>
     public void AddForceTowardsPoint(Vector3 point)
     {
+        Vector3 eulerAngle = transform.eulerAngles;
+
         // Look at the given destination point
         transform.LookAt(point);
         // Cache the rigidbody of this bullet
         Rigidbody rb = GetComponent<Rigidbody>();
         // Add force forward towards the destination point with the velocity assigned to this bullet
-        rb.AddForce(transform.forward * forceVelocity);
+        rb.AddForce((transform.forward)* forceVelocity);
+        transform.eulerAngles = eulerAngle;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -85,7 +95,7 @@ public class Bullet : MonoBehaviour
     private void DispenseRoll(Vector3 pullPosition)
     {
         DispenseRoll();
-        if(playerHoldingFireButton == true) PlayerPull.PlayerSingleton.PullPlayerTowardsPoint(pullPosition);
+        if(playerHoldingFireButton == true) PlayerPull.PlayerSingleton.PullPlayerTowardsPoint(pullPosition, toiletTrailInstance);
     }
 
     /// <summary>
@@ -124,7 +134,9 @@ public class Bullet : MonoBehaviour
         if(rollDispensed == false)
         {
             Debug.Log($"Bullet travelled {distance} units but hasn't collided with anything. Dispensing roll!");
+            toiletTrailInstance.BreakTPLine();
             DispenseRoll();
+            
         }
     }
 
@@ -136,8 +148,21 @@ public class Bullet : MonoBehaviour
         }
         playerHoldingFireButton = false;
         Debug.Log("Player let go of fire button!");
+        toiletTrailInstance.BreakTPLine();
     }
 
-    
+    /// <summary>
+    /// Method called to instantiate a toilet paper line FX
+    /// Then assing the line FX starting reference position
+    /// </summary>
+    /// <param name="startingPosition">The starting position reference</param>
+    public void AssignTPLineStartingPosition(Transform startingPosition)
+    {
+        // Instantiate and assign the toilet paper instance reference
+        toiletTrailInstance = Instantiate(toiletPaperTrailFXPrefab, startingPosition.position, toiletPaperTrailFXPrefab.transform.rotation, this.transform);
+        // Assign it's proper starting and ending position reference points
+        toiletTrailInstance.AssignTPLinePositions(startingPosition, toiletPaperTrailEndRefPosition);
+        toiletTrailInstance.transform.LookAt(startingPosition);
+    }
 
 }

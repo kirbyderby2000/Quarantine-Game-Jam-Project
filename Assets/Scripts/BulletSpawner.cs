@@ -91,12 +91,12 @@ public class BulletSpawner : MonoBehaviour
     private void SpawnBullet(Vector3 spawnPosition, Vector3 endPosition)
     {
         // Instantiate and cache the spawned bullet
-        Bullet instantiatedBullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
+        Bullet instantiatedBullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.Euler(transform.eulerAngles - bulletPrefab.transform.eulerAngles));
         // Add force to the bullet in the specified destination position
         instantiatedBullet.AddForceTowardsPoint(endPosition);
         // Set the bullet's distance to be travelled before being dispensed
         instantiatedBullet.SetDistanceTrackingForDisposal(bulletDistance);
-
+        instantiatedBullet.AssignTPLineStartingPosition(bulletSpawnTransformOriginPoint);
         PlayShootingSound(spawnPosition);
     }
 

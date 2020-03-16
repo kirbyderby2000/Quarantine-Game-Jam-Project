@@ -37,7 +37,7 @@ public class PlayerPull : MonoBehaviour
     /// Method called to pull the player towards a specific position
     /// </summary>
     /// <param name="point">The point to pull the player towards</param>
-    public void PullPlayerTowardsPoint(Vector3 point)
+    public void PullPlayerTowardsPoint(Vector3 point, ToiletPaperTrailFX trail)
     {
         if (PullAllowed(point) == false) return;
         Debug.Log($"Pulling player towards {point.ToString()}");
@@ -49,10 +49,10 @@ public class PlayerPull : MonoBehaviour
         // Turn off gravity
         rigidBody.useGravity = false;
         // Start moving the player towards the given point
-        StartCoroutine(MovePlayerTowardsPoint(point));
+        StartCoroutine(MovePlayerTowardsPoint(point, trail));
     }
     
-    IEnumerator MovePlayerTowardsPoint(Vector3 point)
+    IEnumerator MovePlayerTowardsPoint(Vector3 point, ToiletPaperTrailFX trail)
     {
         pullWindInstance = FMODUnity.RuntimeManager.CreateInstance(pullWindSound);
         pullWindInstance.start();
@@ -61,7 +61,6 @@ public class PlayerPull : MonoBehaviour
         while (Vector3.Distance(transform.position, point) >= Mathf.Epsilon)
         {
             transform.position = Vector3.MoveTowards(transform.position, point, pullDistance);
-            Debug.Log($"Pulling player towards {point.ToString()}");
             yield return null;
         }
 
@@ -75,6 +74,7 @@ public class PlayerPull : MonoBehaviour
         rigidBody.useGravity = true;
         firstPersonController.enabled = true;
         firstPersonController.PullJump();
+        trail.BreakTPLine();
 
         yield return new WaitForSeconds(4f);
         
