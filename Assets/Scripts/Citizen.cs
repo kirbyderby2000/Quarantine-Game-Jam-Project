@@ -7,6 +7,15 @@ public class Citizen : MonoBehaviour
     [SerializeField] GameObject triggerColliderPrefab;
     [SerializeField] GameObject loveParticleFX;
 
+
+    [SerializeField] bool isFemale = false;
+
+    [SerializeField] [FMODUnity.EventRef] string helloMale = "event:/Environment/citizen-male";
+    [SerializeField] [FMODUnity.EventRef] string helloFemale = "event:/Environment/citizen-female";
+    [SerializeField] [FMODUnity.EventRef] string objComplete = "event:/Environment/Obj-Complete";
+
+    FMOD.Studio.EventInstance helloInstance;
+
     private void Awake()
     {
         GetComponent<Animator>().Play("Idle_Wave");
@@ -20,6 +29,12 @@ public class Citizen : MonoBehaviour
         ArrowHUD.ArrowHUDInstance.AddObjectToLookingList(transform);
         StartCoroutine(RotateTowardsPlayer());
         StartCoroutine(SetToKinematicInSeconds(2.0f));
+
+        string helloSFX = isFemale ? helloFemale : helloMale;
+
+        helloInstance = FMODUnity.RuntimeManager.CreateInstance(helloSFX);
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(helloInstance, GetComponent<Transform>(), GetComponent<Rigidbody>());
+        helloInstance.start();
     }
 
     IEnumerator SetToKinematicInSeconds(float seconds)
@@ -45,6 +60,9 @@ public class Citizen : MonoBehaviour
 
     public void OnToiletPaperReceived()
     {
+        helloInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        helloInstance.release();
+        FMODUnity.RuntimeManager.PlayOneShotAttached(objComplete, this.gameObject);
         GetComponent<Animator>().Play("Happy_Jump");
         Instantiate(loveParticleFX, transform.position + new Vector3(0.0f, 3.0f), loveParticleFX.transform.rotation);
         ArrowHUD.ArrowHUDInstance.RemoveObjectFromLookingList(transform);

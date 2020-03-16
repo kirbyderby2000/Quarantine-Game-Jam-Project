@@ -424,6 +424,10 @@ MonoBehaviour:
     type: 3}
   loveParticleFX: {fileID: 852818649431136510, guid: 5258eae026125514e819ccc215d0001b,
     type: 3}
+  isFemale: 1
+  helloMale: event:/Environment/citizen-male
+  helloFemale: event:/Environment/citizen-female
+  objComplete: event:/Environment/Obj-Complete
 --- !u!54 &-8249552628510958540
 Rigidbody:
   m_ObjectHideFlags: 0
